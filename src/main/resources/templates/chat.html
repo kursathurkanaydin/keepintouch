@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0" th:text="${currentUserEmail == chat.getName() ? chat.user1.email : chat.user2.email}">Chat Title</h5>
+                    <a href="/user/my-chats" class="btn btn-light btn-sm"><i class="fas fa-arrow-left"></i> Back</a>
+                </div>
+
+                <div class="card-body" id="chat-container" style="height: 400px; overflow-y: auto;">
+                    <div th:each="message, iterStat : ${chat.getMessages()}" class="mb-3"
+                         th:id="${iterStat.last} ? 'last-message' : ''">
+                        <div class="d-flex" th:classappend="${message.senderMail == currentUserEmail} ? 'justify-content-end' : 'justify-content-start'">
+                            <div class="p-2 rounded" th:classappend="${message.senderMail == currentUserEmail} ? 'bg-primary text-white' : 'bg-light'" style="max-width: 75%;">
+                                <p class="mb-1" th:text="${message.text}">Message content</p>
+                                <small class="text-muted" th:text="${#temporals.format(message.creationDate, 'dd MMM, HH:mm')}">Timestamp</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <form id="message-form" th:action="@{'/user/chat/' + ${chat.id} + '/send'}" method="POST" th:object="${createMessageRequest}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" th:field="*{text}" placeholder="Type a message..." required>
+                            <button type="submit" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function scrollToBottom() {
+        let chatContainer = document.getElementById("chat-container");
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    window.onload = function() {
+        scrollToBottom();
+    };
+
+    document.getElementById("message-form").addEventListener("submit", function() {
+        setTimeout(scrollToBottom, 100);
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
