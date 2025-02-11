@@ -1,5 +1,5 @@
 # KEEPINTOUCH 📨
-You can also visit app website -> [http://13.61.35.210:8080/  ](http://khaydin.chickenkiller.com:8080/)
+You can also visit app website -> (http://khaydin.chickenkiller.com:8080/)  
 A simple messaging application built with **Java** and **Spring Boot** for self-study. This project demonstrates the use of **Spring Security**, **Thymeleaf**, **Spring Data JPA**, and **MySQL**.
 
 ## Features 🚀
